@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html xmlns="w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Ver Filmes</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/> 
+        <link rel="stylesheet" th:href="@{/css/ExibirFilmeCss.css}"/>     
+        <link rel="stylesheet" th:href="@{/css/ChangeThemeCss.css}"/>    
+
+    </head>
+
+    <body>
+        <!--TOPO ESTÁTICO DA PÁGINA-->
+        <header th:insert="~{TopoEstatico.html :: nav}"></header> 
+
+        <!--CONTEÚDO DA PÁGINA-->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" style="margin-top:18vh;">
+                    <p class="h1 mb-5 text-center" style="color:#0056b3;">Todos os Filmes</p>
+                    <!-- BOTÃO PARA ALTERNAR TEMA DO SITE -->
+                    <div class="text-right">
+                        <p class="text" style="font-weight: 500">Tema</p>
+                        <div class="theme-toggle">
+                            <input type="checkbox" id="toggle-checkbox">
+                            <label for="toggle-checkbox" class="toggle-label">
+                                <span class="toggle-ball"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!--DIV PARA EXIBIR FILMES CADASTRADOS NO SISTEMA-->
+                    <div class="row">
+                        <div th:each="filme : ${filmes}" class="col-sm-4 mb-3" style="max-height: 75vh; min-height: 75vh">
+
+                            <!--CARD DE EXIBIÇÃO DOS FILMES-->
+                            <div class="card h-100">
+                                <!--Cabeçalho-->
+                                <div class="card-header">
+                                    <h5 class="card-title" th:text="${filme.titulo}"></h5>
+                                </div>
+                                <!--Corpo-->
+                                <div class="card-body" style="overflow-y: auto;">                                  
+                                    <p class="card-text"><strong>Gênero:</strong> <span th:text="${filme.genero}"></span></p>
+                                    <p class="card-text"><strong>Sinopse:</strong> <span th:text="${filme.sinopse}"></span></p>
+                                    <p class="card-text"><strong>Ano de lançamento:</strong> <span th:text="${filme.ano_lancamento}"></span></p>
+                                </div>
+                                <!--Rodapé-->
+                                <div class="card-footer">
+                                    <a th:href="@{/Analises(filmeId=${filme.id})}" class="btn btn-primary btn-block">Análises</a>                
+                                </div>
+                            </div>
+                        </div>
+                    </div>           
+                </div>
+            </div>
+        </div>
+
+        <script th:src="@{/jquery.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>  
+        <script th:src="@{/js/ChangeThemeJs.js}"></script>
+        <script th:src="@{/js/ExibirFilmesJs.js}"></script>
+    </body> 
+</html>

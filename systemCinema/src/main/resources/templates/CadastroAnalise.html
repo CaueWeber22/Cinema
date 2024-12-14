@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html xmlns="w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Cadastrar Análise</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+        <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" /> 
+        <link rel="stylesheet" th:href="@{/css/CadastrarAnaliseCss.css}" />  
+        <link rel="stylesheet" th:href="@{/css/ChangeThemeCss.css}" />  
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <!--TOPO DA PÁGINA-->
+        <header th:insert="~{TopoEstatico.html :: nav}"></header>
+
+        <!--CONTAINER DE CONTEÚDO DA PÁGINA-->
+        <div class="container-fluid">
+            <div class="row"> 
+                <!--IMAGEM LATERAL DA ESQUERDA-->
+                <div class="fundo col-sm-2 d-flex justify-content-end" style="height: 100vh;margin-top:5vh;">
+                    <img th:src="@{/images/background.png}" alt="fundo" class="fundo img-fluid position-absolute top-0 left-0 h-100">
+                </div>      
+                <!-- ESPAÇO EM BRANCO -->
+                <div class="col-sm-1"></div>
+            
+                <div class="col-sm-6 text-center mb-5" style="margin-top:18vh;">
+                    <p class="text h1 mb-3" style="color:#0056b3; font-weight: bold;">Faça sua análise</p>
+                    
+                    <!--FORMULÁRIO PARA CADASTRO DE ANÁLISE-->
+                    <form id="formAnalise"  th:action="@{/CadastroAnalise}" th:object="${analise}" method="post">
+               
+                        <!--Campo para escolher filme-->
+                        <div class="mb-3"> 
+                            <p class="text"> Filme da análise:
+                                <select id="idFilme" class="form-control" th:field="*{idFilme}">
+                                    <option value="0">Escolha uma opção...</option>
+                                    <option th:each="filme : ${filmes}"
+                                            th:value="${filme.id}"
+                                            th:text="${filme.titulo}" /> 
+                                </select>
+                            </p>
+                        </div>
+                        
+                        
+                        <!--Campo para digitar análise-->
+                        <div class="mb-3">
+                            <p class="text"> Qual sua análise? 
+                                <input type="text" id="txtAnalise" required class="form-control"  th:field="*{analise}" placeholder="Digite sua análise"/>
+                                <span id="spanAnalise" class="text-danger" th:if="${#fields.hasErrors('analise')}" th:errors="*{analise}"></span>
+                            </p>
+                        </div>  
+                        
+                        <!--Campo para digitar nota-->
+                        <div class="mb-4">  
+                            <p class="text">Qual nota você da para o filme (0 a 10)?
+                                <input id="nota" required class="form-control" type="number" th:field="*{nota}" placeholder="Digite a nota"/>
+                                <span id="spanNota" class="text-danger "th:if="${#fields.hasErrors('nota')}" th:errors="*{nota}"></span>
+                            </p>
+                        </div> 
+                        
+
+                        <!--BOTÃO PARA ABRIR MODAL-->
+                        <div class="col-12">
+                            <button type="button" id="abrirModal" class="btn btn-primary btn-block">Cadastrar</button> 
+                        </div>     
+                    </form>  
+                    <!--FIM DO FORM-->         
+                </div>
+
+                <!-- BOTÃO PARA ALTERAR TEMA DO SITE -->
+                <div class="col-sm-1 text-right" style="margin-top:18vh;">
+                     <p class="text" style="font-size: 15px;font-weight: 500">Tema</p>
+                    <div class="theme-toggle">
+                        <input type="checkbox" id="toggle-checkbox">
+                        <label for="toggle-checkbox" class="toggle-label">
+                            <span class="toggle-ball"></span>
+                        </label>
+                    </div>
+                </div>
+                <!--IMAGEM LATERAL DA DIREITA-->
+                <div class="fundo col-sm-2 position-relative d-none d-sm-block" style="height: 100vh;margin-top:5vh;">
+                    <img th:src="@{/images/background.png}" alt="fundo" class="img-fluid position-absolute top-0 end-0 h-100">
+                </div>
+            </div>
+        </div>
+        
+        <!-- MODAL -->
+        <div class="modal fade" id="confirmarModal" role="dialogue">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <!--CABEÇALHO-->
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmação de Cadastro da análise</h5>
+                        <button type="button" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>                   
+                </div>
+                <!--CORPO-->
+                <div class="modal-body">
+                    Tem certeza que deseja cadastrar esta análise?
+                </div>
+                <!--RODAPÉ-->
+                <div class="modal-footer">
+                    <!--CANCELAR ENVIO-->
+                    <button type="button" class="btn btn-secundary" data-dismiss="modal">Cancelar</button>
+                    <!--CADASTRAR ANÁLISE-->
+                     <button id="btnCadastrar" form="formAnalise" class="btn btn-primary" type="submit">Confirmar</button> 
+                </div>
+                </div>
+            </div>
+        </div>
+
+    <script th:src="@{/jquery.js}"></script> 
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>   
+    <script th:src="@{/js/CadastroAnaliseJs.js}"></script> 
+    <script th:src="@{/js/ChangeThemeJs.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    </body>    
+</html>

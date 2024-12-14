@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html xmlns="w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Alteração de análise</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/> 
+        <link rel="stylesheet" th:href="@{/css/AlterarAnaliseCss.css}"/>   
+        <link rel="stylesheet" th:href="@{/css/ChangeThemeCss.css}"/> 
+    </head>
+
+    <body>
+        <!--TOPO DA PÁGINA-->
+        <header th:insert="~{TopoEstatico.html :: nav}"></header>
+
+        <!--CONTAINER DE CONTEÚDO DA PÁGINA-->
+        <div class="container-fluid">
+            <div class="row">
+
+                <!-- ESPAÇO EM BRANCO -->
+                <div class="col-sm-1"></div>
+
+                <div class="col-sm-6" style="margin-top:18vh;">
+                    <p class="h1 ml-3" style="color: #0056b3; font-weight: bold;">Alteração de análise</p>
+
+                    <!--FORMULÁRIO PARA ALTERAÇÃO DE DADOS DA ANÁLISE-->
+                    <div class="mt-1">
+                        <form id="formAlteracao"  th:action="@{/AlteracaoAnalise}" th:object="${analise}" method="post"> 
+                            <!--Hidden inputs para passar id's da análise-->
+                            <input type="hidden" id="idAnalise" th:field="*{id}"/>
+                            <input type="hidden" id="idFilme" th:field="*{idFilme}"/>
+
+                            <!--Campo para digitar a análise-->
+                            <div class="mb-3"> 
+                                <p id="text" class="text">Análise: 
+                                    <input id="txtAnalise" required class="form-control" type="text" th:field="*{analise}"  placeholder="Digite a análise"/> 
+                                    <span 
+                                        id="spanAnalise" class="text-danger" th:if="${#fields.hasErrors('analise')}" th:errors="*{analise}"></span>
+                                </p>
+                            </div>                      
+
+                            <!--Campo para digitar nota-->
+                            <div class="mb-4"> 
+                                <p id="text" class="text">Nota: 
+                                    <input id="nota" required class="form-control"  type="number" th:field="*{nota}"/> 
+                                    <span 
+                                        id="spanNota" class="text-danger" th:if="${#fields.hasErrors('nota')}" th:errors="*{nota}"></span>
+                                </p>
+                            </div>
+
+                            <!--Botão para abrir modal de confirmação-->
+                            <div class="col-12 mb-5">
+                                <button type="button" id="abrirModal" class="btn btn-primary btn-block" data-toggle="modal">Alterar</button>
+                            </div>
+
+                        </form>   
+                        <!--FIM DO FORM-->         
+                    </div>
+                </div>
+
+                <!-- BOTÃO PARA ALTERAR TEMA DO SITE -->
+                <div class="col-sm-3 text-right" style="margin-top:18vh;">
+                    <p class="text" style="font-size: 15px;font-weight: 500">Tema</p>
+                    <div class="theme-toggle">
+                        <input type="checkbox" id="toggle-checkbox">
+                        <label for="toggle-checkbox" class="toggle-label">
+                            <span class="toggle-ball"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!--IMAGEM LATERAL-->
+                <div class="col-sm-2 position-relative d-none d-sm-block" style="height: 110vh;margin-bottom: 0;margin-top:5vh;">
+                    <img id="fundo" th:src="@{/images/background.png}" alt="fundo" class="img-fluid position-absolute top-0 end-0 h-100">
+                </div>
+            </div>
+        </div>
+
+        <!--MODAL PARA ALTERAR OU CANCELAR-->
+        <div class="modal fade" id="confirmarModal" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--CABEÇALHO-->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmação de alteração de dados</h5>
+                        <button type="button" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <!--CORPO-->
+                    <div class="modal-body">
+                        Tem certeza que deseja alterar os dados da análise?
+                    </div>
+                    <!--RODAPÉ-->
+                    <div class="modal-footer">
+                        <!--BOTÃO PARA CANCELAR CADASTRO-->
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <!--BOTÃO PARA ENVIO DO FORM-->
+                        <button id="btnAlterar" form="formAlteracao" class="btn btn-primary" type="submit">Confirmar</button>                  
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </body>  
+
+    <script th:src="@{/jquery.js}"></script> 
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/AlterarAnaliseJs.js}"></script> 
+    <script th:src="@{/js/ChangeThemeJs.js}"></script> 
+
+</html>

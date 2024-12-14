@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html xmlns="w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Analises</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" /> 
+        <link rel="stylesheet" th:href="@{/css/AnalisesCss.css}" />     
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" th:href="@{/css/ChangeThemeCss.css}" />     
+    </head>
+
+    <body>
+        <!--TOPO DA PÁGINA-->
+        <header th:insert="~{TopoEstatico.html :: nav}"></header>
+
+        <!--CONTAINER DE CONTEÚDO DA PÁGINA-->
+        <div class="container-fluid">
+            <div class="row"> 
+
+                <!-- ESPAÇO EM BRANCO -->
+                <div class="col-sm-1"></div>
+
+                <div class="col-sm-7 text-center" style="margin-top:18vh;">
+                    <p class="text h1 ml-3">Análises do filme
+                        <span th:text="${filme.titulo}" style="color:#0056b3"></span> </p>
+                    <hr>                 
+                    <!--DIVS COM ANÁLISES-->                    
+                    <div class="row">
+                        <div class="col-sm-12" th:each="analise : ${analises}">
+                            <div class="divAnalises mb-2 p-2">
+                                <p class="text-left h5 analisesP">Análise: 
+                                    <span id="text" class="text" th:text="${analise.analise}"> aaaa</span></p>
+                                <p class="text-left h5 analisesP">Nota de avaliação: 
+                                    <span id="text" class="text" th:text="${analise.nota}">aaaa</span></p>
+
+                                <div class="row">
+                                    <div class="col-sm-12 d-flex justify-content-end">
+                                        <!-- Excluir análise -->
+                                        <form id="formExcluir" th:action="@{/DeletarAnalise}" th:object="${analise}" method="POST">
+                                            <input type="hidden" id="idAnalise" name="id" th:value="${analise.id}" />
+                                            <input type="hidden" id="idFilme" name="idFilme" th:value="${filme.id}"/>
+                                            <button id="btnExcluir" type="submit" class="btnExcluir fa fa-trash"></button>    
+                                        </form>    
+                                        <!-- Botão para acessar página de alteração da análise -->
+                                        <a th:href="@{/AlterarAnalise(id=${analise.id})}" class="pl-5 pr-5 ml-2 btn btn-primary">Alterar</a>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>                                   
+                    </div>
+
+                </div> 
+
+                <!-- BOTÃO PARA ALTERAR TEMA DO SITE -->
+                <div class="col-sm-3 text-right" style="margin-top:18vh;">
+                    <p class="text" style="font-size: 15px;font-weight: 500">Tema</p>
+                    <div class="theme-toggle">
+                        <input type="checkbox" id="toggle-checkbox">
+                        <label for="toggle-checkbox" class="toggle-label">
+                            <span class="toggle-ball"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!--MODAL PARA CONFIRMAÇÃO DE EXCLUSÃO DA ANALISE-->
+
+        <div class="modal fade" id="confirmarExclusaoModal" role="dialogue">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--CABEÇALHO-->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmação de exclusão da análise</h5>
+                        <button type="button" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>                   
+                    </div>
+                    <!--CORPO-->
+                    <div class="modal-body">
+                        Tem certeza que deseja excluir esta análise?
+                    </div>
+                    <!--RODAPÉ-->
+                    <div class="modal-footer">
+                        <!--CANCELAR EXCLUSÃO-->
+                        <button type="button" class="btn btn-secundary" data-dismiss="modal">Cancelar</button>
+                        <!--EXCLUIR-->
+                        <button id="btnCadastrar" form="formAnalise" class="btn btn-primary" type="submit">Confirmar</button> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:src="@{/jquery.js}"></script> 
+        <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+        <script th:src="@{/js/Analises.js}"></script> 
+        <script th:src="@{/js/ChangeThemeJs.js}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    </body>
+</html>

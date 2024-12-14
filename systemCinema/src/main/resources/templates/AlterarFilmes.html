@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html xmlns="w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Cadastrar Filme</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" /> 
+        <link rel="stylesheet" th:href="@{/css/AlterarFilmesCss.css}" />  
+        <link rel="stylesheet" th:href="@{/css/ChangeThemeCss.css}" /> 
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <!--TOPO DA PÁGINA-->
+        <header th:insert="~{TopoEstatico.html :: nav}"></header>
+
+        <!--CONTAINER DE CONTEÚDO DA PÁGINA-->
+        <div class="container-fluid">
+            <div class="row">
+
+                <!-- ESPAÇO EM BRANCO -->
+                <div class="col-sm-1"></div>
+
+                <div class="col-sm-6" style="margin-top:18vh;">
+                    <p class="h1 ml-3" style="color:#0056b3; font-weight: bold;">Alteração de informações de um filme</p>
+
+                    <!--Escolher tipo de alteração-->
+                    <div class="mt-3">
+                        <p class="h3" style="color:#0056b3">Selecione uma opção de alteração para o filme:</p>
+
+                        <form id="formOpcao" class="excluir-alterar">
+                            <input type="radio" id="alterar" name="tipoAlteracao" value="opAlterar">
+                            <label class="text pr-4" for="alterar">Alterar dados</label>
+
+                            <input type="radio" id="excluir" name="tipoAlteracao" value="opExcluir">
+                            <label class="text" for="remover">Remover filme</label><br>
+                        </form>
+                    </div> 
+
+                    <!--DIV PARA ALTERAR DADOS DE FILME-->
+                    <div id="div-alterar" class="col-sm-12 esconder">
+
+                        <!--Form para alteração-->
+                        <form id="formAlterar" th:action="@{/AlterarFilme}" th:object="${filme}" method="POST">
+
+                            <!--Campo para escolher filme que será alterado-->
+                            <div class="mt-2 mb-3"> 
+                                <p class="text"> Filme que será alterado:
+                                    <select id="idFilme" class="form-control" th:field="*{id}" style="width: 65%;">
+                                        <option value="0">Escolha uma opção...</option>
+                                        <option th:each="filmeEntity : ${filmes}"
+                                                th:value="${filmeEntity.id}"
+                                                th:text="${filmeEntity.titulo}" /> 
+                                    </select>
+                                </p>
+                            </div>    
+
+                            <!--Campo para digitar título-->
+                            <div class="mb-3"> 
+                                <p class="text">Título: 
+                                    <input id="titulo" required class="form-control" type="text" th:field="*{titulo}"  placeholder="Digite o título"/> 
+                                    <span 
+                                        id="spanTitulo" class="text-danger" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></span>
+                                </p>
+                            </div> 
+
+                            <!--Campo para digitar sinopse-->
+                            <div class="mb-3"> 
+                                <p class="text">Sinopse: 
+                                    <input id="sinopse" required class="form-control"  type="text" th:field="*{sinopse}" placeholder="Digite a sinopse"/> 
+                                    <span 
+                                        class="text-danger" th:if="${#fields.hasErrors('sinopse')}" th:errors="*{sinopse}"></span>
+                                </p>
+                            </div>
+
+                            <!--Campo para escolher gênero-->
+                            <div class="mb-3"> 
+                                <p class="text"> Gênero:
+                                    <select id="genero" class="form-control" th:field="*{genero}">
+                                        <option value="">Escolha uma opção...</option>
+                                        <option value="Ação e aventura">Ação e aventura</option>
+                                        <option value="Drama">Drama</option>
+                                        <option value="Romance">Romance</option>
+                                        <option value="Terror">Terror</option>
+                                        <option value="Ficção científica">Ficção Científica</option>
+                                        <option value="Comedia">Comédia</option>
+                                    </select>
+                                </p>
+                            </div>
+
+                            <!--Campo para digitar ano de lançamento-->
+                            <div class="mb-4"> 
+                                <p class="text">Data de lançamento: 
+                                    <input id="dataLanc" required class="form-control"  type="number" th:field="*{ano_lancamento}"/> 
+                                    <span 
+                                        id="spanDataLanc" class="text-danger" th:if="${#fields.hasErrors('ano_lancamento')}" th:errors="*{ano_lancamento}"></span>
+                                </p>
+                            </div>
+
+                            <!--Botão para abrir modal de confirmação-->
+                            <div class="col-12 mb-5">
+                                <button type="button" id="abrirModalAlteracao" class="btn btn-primary btn-block" data-toggle="modal">Alterar</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <!--DIV PARA EXCLUIR FILME-->
+                    <div id="div-excluir" class="col-sm-12 esconder">
+                        <!--Campo para escolher filme que será excluído-->
+                        <form class ="dark-p" id="formExcluir" th:action="@{/DeletarFilme}" th:object="${filme}" method="POST">
+                            <div class="mt-2 mb-3"> 
+                                <p class="text"> Filme que será exluído: 
+                                    <select id="idFilmeExcluir" class="form-control" th:field="*{id}" style="width: 65%;">
+                                        <option value="0">Escolha uma opção...</option>
+                                        <option th:each="filmeEntity : ${filmes}"
+                                                th:value="${filmeEntity.id}"
+                                                th:text="${filmeEntity.titulo}" /> 
+                                    </select>
+                                </p>
+                            </div>
+                            <!--Botão para abrir modal de confirmação-->
+                            <div class="col-12 mb-5">
+                                <button type="button" id="abrirModalExclusao" class="btn btn-primary btn-block" data-toggle="modal">Excluir</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- BOTÃO PARA ALTERAR TEMA DO SITE -->
+                <div class="col-sm-3 text-right" style="margin-top:18vh;">
+                    <p class="text" style="font-size: 15px;font-weight: 500">Tema</p>
+                    <div class="theme-toggle">
+                        <input type="checkbox" id="toggle-checkbox">
+                        <label for="toggle-checkbox" class="toggle-label">
+                            <span class="toggle-ball"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!--IMAGEM LATERAL-->
+                <div class="col-sm-2 position-relative d-none d-sm-block" style="height: 110vh;margin-bottom: 0;margin-top:5vh;">
+                    <img id="fundo" th:src="@{/images/background.png}" alt="fundo" class="img-fluid position-absolute top-0 end-0 h-100">
+                </div>
+            </div>
+        </div>
+
+        <!--MODAL REALIZAR ALTERAÇÃO OU CANCELAR-->
+        <div class="modal fade" id="alterarModal" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--CABEÇALHO-->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmação de alteração de filme</h5>
+                        <button type="button" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <!--CORPO-->
+                    <div class="modal-body">
+                        Tem certeza que deseja alterar os dados deste filme?
+                    </div>
+                    <!--RODAPÉ-->
+                    <div class="modal-footer">
+                        <!--BOTÃO PARA CANCELAR ALTERAÇÃO-->
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <!--BOTÃO PARA ENVIO DO FORM-->
+                        <button id="btnAlterar" form="formAlterar" class="btn btn-primary" type="submit">Confirmar</button>                  
+                    </div>
+                </div>
+            </div>
+        </div>      
+
+        <!--MODAL PARA REALIZAR EXCLUSÃO-->
+        <div class="modal fade" id="excluirModal" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--CABEÇALHO-->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmação exclusão de filme</h5>
+                        <button type="button" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <!--CORPO-->
+                    <div class="modal-body">
+                        Tem certeza que deseja excluir este filme e todas suas análises?
+                    </div>
+                    <!--RODAPÉ-->
+                    <div class="modal-footer">
+                        <!--BOTÃO PARA CANCELAR EXCLUSÃO-->
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <!--BOTÃO PARA ENVIO DO FORM-->
+                        <button id="btnExcluir" form="formExcluir" class="btn btn-primary" type="submit">Confirmar</button>                  
+                    </div>
+                </div>
+            </div>
+        </div>   
+
+        <script th:src="@{/jquery.js}"></script> 
+        <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+        <script th:src="@{/js/AlterarFilmesJs.js}"></script> 
+        <script th:src="@{/js/ChangeThemeJs.js}"></script> 
+
+    </body>    
+</html>
